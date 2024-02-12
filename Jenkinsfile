@@ -8,13 +8,13 @@ pipeline {
 
     stages {
         stage('Fetch Code') {
-            'steps' {
-                git branch: 'main', url: 'https://github.com/hkhcoder/vprofile-project.git'
+            steps {
+                git branch: 'vp-rem', url: 'https://github.com/hkhcoder/vprofile-project.git'
             }
         }
 
         stage('Build') {
-            'steps' {
+            steps {
                 sh 'mvn install -DskipTests'
             }
             post {
@@ -25,14 +25,14 @@ pipeline {
             }
         }
 
-        stage('UNIT TEST') {
-            'steps' {
+        stage(' TEST') {
+            steps {
                 sh 'mvn test'
             }
         }
 
         stage('Chekstyle Analysis'){
-            'steps'{
+            steps {
                 sh ' mvn checkstyle:checkstyle'
             }
         }
@@ -55,7 +55,7 @@ pipeline {
                     }
                 }
         stage("Quality Gate") {
-            'steps' {
+            steps {
                 timeout(time: 1, unit: 'HOURS') {
                     // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
                     // true = set pipeline to UNSTABLE, false = don't

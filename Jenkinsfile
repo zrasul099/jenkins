@@ -36,23 +36,22 @@ pipeline {
                 sh ' mvn checkstyle:checkstyle'
             }
         }
-            stage('Sonar Analysis'){
+
+        stage('Sonar Analysis') {
+            environment {
+                scannerHome = tool 'sonar4.7'
+            }
             steps {
-                script {
-                    def scannerHome = tool 'sonar4.7'
-                    withSonarQubeEnv('sonar') {
-                        sh """${scannerHome}/bin/sonar-scanner  
-                            -Dsonar.projectKey=vprofile \
-                            -Dsonar.projectName=vprofile \
-                            -Dsonar.projectVersion=1.0 \
-                            -Dsonar.sources=src/ \
-                            -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/ \
-                            -Dsonar.junit.reportsPath=target/surefire-reports/ \
-                            -Dsonar.jacoco.reportsPath=target/jacoco.exec \
-                            -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml
-                        """
-                    }
-                }
+               withSonarQubeEnv('sonar') {
+                   sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=vprofile \
+                   -Dsonar.projectName=vprofile \
+                   -Dsonar.projectVersion=1.0 \
+                   -Dsonar.sources=src/ \
+                   -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/ \
+                   -Dsonar.junit.reportsPath=target/surefire-reports/ \
+                   -Dsonar.jacoco.reportsPath=target/jacoco.exec \
+                   -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
+              }
             }
         }
 
